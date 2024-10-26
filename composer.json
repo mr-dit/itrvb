@@ -11,5 +11,7 @@
             "email": "mezentsev000@mail.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "fakerphp/faker": "^1.23"
+    }
 }
