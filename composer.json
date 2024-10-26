@@ -1,0 +1,15 @@
+{
+    "name": "dmitriy/itrvb",
+    "autoload": {
+        "psr-4": {
+            "Dmitriy\\Itrvb\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mr-dit",
+            "email": "mezentsev000@mail.ru"
+        }
+    ],
+    "require": {}
+}
