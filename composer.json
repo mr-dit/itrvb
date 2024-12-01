@@ -1,0 +1,11 @@
+{
+    "name": "app/blog",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "symfony/polyfill-uuid": "^1.28"
+    }
+}
