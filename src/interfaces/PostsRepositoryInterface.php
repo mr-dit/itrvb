@@ -1,6 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Interfaces;
+
+use App\Post;
+use App\UUID;
 
 interface PostsRepositoryInterface
 {

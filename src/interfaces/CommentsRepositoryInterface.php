@@ -1,6 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Interfaces;
+
+use App\Comment;
+use App\UUID;
 
 interface CommentsRepositoryInterface
 {
