@@ -24,7 +24,7 @@ class PostsRepository implements PostsRepositoryInterface
       ':uuid' => (string)$post->getUuid(),
       ':author_uuid' => (string)$post->getAuthorUuid(),
       ':title' => $post->getTitle(),
-      ':text' => $post->getContent(),
+      ':text' => $post->getText(),
     ]);
   }
 

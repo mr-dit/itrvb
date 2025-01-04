@@ -23,7 +23,7 @@ class CommentsRepository implements CommentsRepositoryInterface
       ':uuid' => (string)$comment->getUuid(),
       ':post_uuid' => (string)$comment->getPostUuid(),
       ':author_uuid' => (string)$comment->getAuthorUuid(),
-      ':text' => $comment->getContent(),
+      ':text' => $comment->getText(),
     ]);
   }
 

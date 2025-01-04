@@ -27,7 +27,7 @@ class Post
         return $this->title;
     }
 
-    public function getContent(): string
+    public function getText(): string
     {
         return $this->text;
     }

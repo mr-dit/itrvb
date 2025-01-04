@@ -70,7 +70,7 @@ class CommentsRepositoryTest extends TestCase
     $this->assertEquals($uuid, $comment->getUuid());
     $this->assertEquals($postUuid, $comment->getPostUuid());
     $this->assertEquals($authorUuid, $comment->getAuthorUuid());
-    $this->assertEquals('Текст комментария', $comment->getContent());
+    $this->assertEquals('Текст комментария', $comment->getText());
   }
 
   public function testItThrowsExceptionWhenCommentNotFound(): void

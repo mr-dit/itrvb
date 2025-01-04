@@ -67,7 +67,7 @@ class PostsRepositoryTest extends TestCase
     $this->assertEquals($uuid, $post->getUuid());
     $this->assertEquals($authorUuid, $post->getAuthorUuid());
     $this->assertEquals('Название', $post->getTitle());
-    $this->assertEquals('Текст', $post->getContent());
+    $this->assertEquals('Текст', $post->getText());
   }
 
   public function testItThrowsExceptionWhenPostNotFound(): void
