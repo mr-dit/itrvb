@@ -16,13 +16,13 @@ class PostsRepository implements PostsRepositoryInterface
   public function save(Post $post): void
   {
     $statement = $this->connection->prepare(
-      'INSERT INTO posts (uuid, authorUuid, title, text)
-            VALUES (:uuid, :authorUuid, :title, :text)'
+      'INSERT INTO posts (uuid, author_uuid, title, text)
+            VALUES (:uuid, :author_uuid, :title, :text)'
     );
 
     $statement->execute([
       ':uuid' => (string)$post->getUuid(),
-      ':authorUuid' => (string)$post->getAuthorUuid(),
+      ':author_uuid' => (string)$post->getAuthorUuid(),
       ':title' => $post->getTitle(),
       ':text' => $post->getContent(),
     ]);
@@ -46,7 +46,7 @@ class PostsRepository implements PostsRepositoryInterface
 
     return new Post(
       new Uuid($result['uuid']),
-      new Uuid($result['authorUuid']),
+      new Uuid($result['author_uuid']),
       $result['title'],
       $result['text']
     );

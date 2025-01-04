@@ -3,27 +3,26 @@
 namespace App\Repositories;
 
 use App\Interfaces\CommentsRepositoryInterface;
-use PDO;
 use App\Comment;
 use App\UUID;
 
 class CommentsRepository implements CommentsRepositoryInterface
 {
   public function __construct(
-    private PDO $connection
+    private \PDO $connection
   ) {}
 
   public function save(Comment $comment): void
   {
     $statement = $this->connection->prepare(
-      'INSERT INTO comments (uuid, postUuid, authorUuid, text)
-            VALUES (:uuid, :postUuid, :authorUuid, :text)'
+      'INSERT INTO comments (uuid, post_uuid, author_uuid, text)
+            VALUES (:uuid, :post_uuid, :author_uuid, :text)'
     );
 
     $statement->execute([
       ':uuid' => (string)$comment->getUuid(),
-      ':postUuid' => (string)$comment->getPostUuid(),
-      ':authorUuid' => (string)$comment->getAuthorUuid(),
+      ':post_uuid' => (string)$comment->getPostUuid(),
+      ':author_uuid' => (string)$comment->getAuthorUuid(),
       ':text' => $comment->getContent(),
     ]);
   }
@@ -38,7 +37,7 @@ class CommentsRepository implements CommentsRepositoryInterface
       ':uuid' => (string)$uuid,
     ]);
 
-    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
     if ($result === false) {
       throw new \Exception("Комментарий не найден: $uuid");
@@ -46,8 +45,8 @@ class CommentsRepository implements CommentsRepositoryInterface
 
     return new Comment(
       new Uuid($result['uuid']),
-      new Uuid($result['postUuid']),
-      new Uuid($result['authorUuid']),
+      new Uuid($result['post_uuid']),
+      new Uuid($result['author_uuid']),
       $result['text']
     );
   }
