@@ -17,23 +17,16 @@ class CommentsRepositoryTest extends TestCase
   protected function setUp(): void
   {
     $this->pdo = new PDO('sqlite:' . __DIR__ . '/../../database.sqlite');
-
-    // Очистка таблицы перед каждым тестом
-    $this->pdo->exec('DELETE FROM comments WHERE uuid = "00000000-0000-0000-0000-000000000001"');
-
+    $this->pdo->exec('DELETE FROM comments');
     $this->repository = new CommentsRepository($this->pdo);
   }
 
-  public function testItSavesCommentToRepository(): void
+  public function testItSavesCommentToDatabase(): void
   {
-    $testUuid = new Uuid('00000000-0000-0000-0000-000000000001');
-    $postUuid = new Uuid('00000000-0000-0000-0000-000000000002');
-    $authorUuid = new Uuid('00000000-0000-0000-0000-000000000003');
-
     $comment = new Comment(
-      $testUuid,
-      $postUuid,
-      $authorUuid,
+      Uuid::random(),
+      Uuid::random(),
+      Uuid::random(),
       'Тестовый комментарий'
     );
 
@@ -43,15 +36,15 @@ class CommentsRepositoryTest extends TestCase
       'SELECT * FROM comments WHERE uuid = :uuid'
     );
     $statement->execute([
-      ':uuid' => (string)$testUuid,
+      ':uuid' => (string)$comment->getUuid(),
     ]);
 
     $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-    $this->assertEquals((string)$testUuid, $result['uuid']);
-    $this->assertEquals((string)$postUuid, $result['post_uuid']);
-    $this->assertEquals((string)$authorUuid, $result['author_uuid']);
-    $this->assertEquals('Тестовый комментарий', $result['text']);
+    $this->assertEquals((string)$comment->getUuid(), $result['uuid']);
+    $this->assertEquals((string)$comment->getPostUuid(), $result['post_uuid']);
+    $this->assertEquals((string)$comment->getAuthorUuid(), $result['author_uuid']);
+    $this->assertEquals($comment->getText(), $result['text']);
   }
 
   public function testItFindsCommentByUuid(): void
