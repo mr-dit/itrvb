@@ -11,7 +11,7 @@ use App\Exceptions\UserNotFoundException;
 use App\Repositories\UsersRepository;
 use App\UUID;
 
-class FindByUsername implements ActionInterface
+class FindByUuid implements ActionInterface
 {
     public function __construct(
         private UsersRepository $userRepository
