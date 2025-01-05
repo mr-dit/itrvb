@@ -2,6 +2,7 @@
 
 namespace App\myHttp\Actions\Like;
 
+use App\myHttp\Actions\ActionInterface;
 use App\myHttp\Request;
 use App\myHttp\Response;
 use App\Repositories\LikeRepository;
@@ -10,7 +11,7 @@ use App\myHttp\ErrorResponse;
 use App\UUID;
 use App\Like;
 
-class AddLike
+class AddLike implements ActionInterface
 {
   private LikeRepository $likeRepository;
   public function __construct(LikeRepository $likeRepository)
