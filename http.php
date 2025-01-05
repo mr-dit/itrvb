@@ -5,12 +5,14 @@ require 'vendor/autoload.php';
 use App\myHttp\Actions\Comments\CreateComment;
 use App\myHttp\Actions\Posts\CreatePost;
 use App\myHttp\Actions\Posts\DeletePost;
-use App\myHttp\Actions\Users\FindByUsername;
+use App\myHttp\Actions\Users\FindByUuid;
 use App\myHttp\ErrorResponse;
 use App\myHttp\Request;
 use App\Repositories\CommentsRepository;
 use App\Repositories\PostsRepository;
 use App\Repositories\UsersRepository;
+use PDO;
+
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -28,31 +30,25 @@ try {
     handleError($ex->getMessage());
 }
 
+$pdo = new PDO('sqlite:' . __DIR__ . '/../../database.sqlite');
+
 $routes = [
     'GET' => [
-        '/users/show' => new FindByUsername(
-            new UsersRepository(
-                new PDO('sqlite:' . __DIR__ . '/db/blog.sqlite')
-            )
+        '/users/show' => new FindByUuid(
+            new UsersRepository($pdo)
         )
     ],
     'POST' => [
         '/posts/comment' => new CreateComment(
-            new CommentsRepository(
-                new PDO('sqlite:' . __DIR__ . '/db/blog.sqlite')
-            )
+            new CommentsRepository($pdo)
         ),
         '/posts/create' => new CreatePost(
-            new PostsRepository(
-                new PDO('sqlite:' . __DIR__ . '/db/blog.sqlite')
-            )
+            new PostsRepository($pdo)
         )
     ],
     'DELETE' => [
         '/posts' => new DeletePost(
-            new PostsRepository(
-                new PDO('sqlite:' . __DIR__ . '/db/blog.sqlite')
-            )
+            new PostsRepository($pdo)
         )
     ]
 ];
