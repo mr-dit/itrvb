@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Interfaces\UsersRepositoryInterface;
 use App\User;
 use App\UUID;
 use App\Exceptions\UserNotFoundException;
@@ -9,7 +10,7 @@ use Error;
 use PDO;
 use PDOException;
 
-class UsersRepository
+class UsersRepository implements UsersRepositoryInterface
 {
   public function __construct(
     private PDO $pdo
