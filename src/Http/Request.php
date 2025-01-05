@@ -87,4 +87,9 @@ class Request
 
         return $value;
     }
+
+    public function get(string $key): string
+    {
+        return $this->getArrayValue($key, $this->get);
+    }
 }
