@@ -6,17 +6,18 @@ use PDO;
 use App\Like;
 use App\UUID;
 use App\Interfaces\LikeRepositoryInterface;
+use Psr\Log\LoggerInterface;
 
 class LikeRepository implements LikeRepositoryInterface
 {
-  private PDO $pdo;
-  public function __construct(PDO $pdo)
-  {
-    $this->pdo = $pdo;
-  }
+  public function __construct(
+    private PDO $pdo,
+    private LoggerInterface $logger
+  ) {}
 
   public function save(Like $like): void
   {
+    $this->logger->info("Saving like: {$like->getUuid()}");
     $existingLike = $this->getExistingLike($like->getPostUuid(), $like->getUserUuid());
     if ($existingLike) {
       throw new \RuntimeException('Пользователь уже поставил лайк этой статье.');

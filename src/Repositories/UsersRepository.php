@@ -9,12 +9,15 @@ use App\Exceptions\UserNotFoundException;
 use Error;
 use PDO;
 use PDOException;
+use Psr\Log\LoggerInterface;
 
 class UsersRepository implements UsersRepositoryInterface
 {
   public function __construct(
-    private PDO $pdo
+    private PDO $pdo,
+    private LoggerInterface $logger
   ) {}
+
   public function get(UUID $uuid): User
   {
 
@@ -27,6 +30,7 @@ class UsersRepository implements UsersRepositoryInterface
 
       $result = $stmt->fetch(PDO::FETCH_ASSOC);
       if (!$result) {
+        $this->logger->warning("User not found: $uuid");
         throw new UserNotFoundException();
       }
     } catch (PDOException $e) {

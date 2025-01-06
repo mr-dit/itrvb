@@ -5,15 +5,19 @@ namespace App\Repositories;
 use App\Interfaces\CommentsRepositoryInterface;
 use App\Comment;
 use App\UUID;
+use Psr\Log\LoggerInterface;
 
 class CommentsRepository implements CommentsRepositoryInterface
 {
   public function __construct(
-    private \PDO $connection
+    private \PDO $connection,
+    private LoggerInterface $logger
   ) {}
 
   public function save(Comment $comment): void
   {
+    $this->logger->info("Saving comment: {$comment->getUuid()}");
+
     $statement = $this->connection->prepare(
       'INSERT INTO comments (uuid, post_uuid, author_uuid, text)
             VALUES (:uuid, :post_uuid, :author_uuid, :text)'
@@ -40,6 +44,7 @@ class CommentsRepository implements CommentsRepositoryInterface
     $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
     if ($result === false) {
+      $this->logger->warning("Comment not found: $uuid");
       throw new \Exception("Комментарий не найден: $uuid");
     }
 

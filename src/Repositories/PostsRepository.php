@@ -7,15 +7,18 @@ use PDO;
 use App\Post;
 use App\UUID;
 use App\Exceptions\PostNotFoundException;
+use Psr\Log\LoggerInterface;
 
 class PostsRepository implements PostsRepositoryInterface
 {
   public function __construct(
-    private PDO $connection
+    private PDO $connection,
+    private LoggerInterface $logger
   ) {}
 
   public function save(Post $post): void
   {
+    $this->logger->info("Saving post: {$post->getUuid()}");
     $statement = $this->connection->prepare(
       'INSERT INTO posts (uuid, author_uuid, title, text)
             VALUES (:uuid, :author_uuid, :title, :text)'
@@ -42,6 +45,7 @@ class PostsRepository implements PostsRepositoryInterface
     $result = $statement->fetch(PDO::FETCH_ASSOC);
 
     if ($result === false) {
+      $this->logger->warning("Post not found: $uuid");
       throw new PostNotFoundException("Пост не найден: $uuid");
     }
 
@@ -64,6 +68,7 @@ class PostsRepository implements PostsRepositoryInterface
     ]);
 
     if ($statement->rowCount() === 0) {
+      $this->logger->warning("Post not found while deleting: $uuid");
       throw new PostNotFoundException("Пост не найден: $uuid");
     }
   }
