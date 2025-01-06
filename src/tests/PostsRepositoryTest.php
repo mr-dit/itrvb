@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use PDO;
 use App\UUID;
 use App\Exceptions\PostNotFoundException;
+use Psr\Log\NullLogger;
 
 
 class PostsRepositoryTest extends TestCase
@@ -19,10 +20,9 @@ class PostsRepositoryTest extends TestCase
   protected function setUp(): void
   {
     $this->pdo = new PDO('sqlite:' . __DIR__ . '/../../database.sqlite');
-    // Очистка таблицы перед каждым тестом
     $this->pdo->exec('DELETE FROM posts');
 
-    $this->repository = new PostsRepository($this->pdo);
+    $this->repository = new PostsRepository($this->pdo, new NullLogger());
   }
 
   public function testItSavesPostToRepository(): void

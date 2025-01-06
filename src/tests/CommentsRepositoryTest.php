@@ -7,6 +7,7 @@ use App\Repositories\CommentsRepository;
 use PHPUnit\Framework\TestCase;
 use PDO;
 use App\UUID;
+use Psr\Log\NullLogger;
 
 
 class CommentsRepositoryTest extends TestCase
@@ -18,7 +19,7 @@ class CommentsRepositoryTest extends TestCase
   {
     $this->pdo = new PDO('sqlite:' . __DIR__ . '/../../database.sqlite');
     $this->pdo->exec('DELETE FROM comments');
-    $this->repository = new CommentsRepository($this->pdo);
+    $this->repository = new CommentsRepository($this->pdo, new NullLogger());
   }
 
   public function testItSavesCommentToDatabase(): void

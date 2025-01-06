@@ -34,6 +34,7 @@ class UsersRepository implements UsersRepositoryInterface
         throw new UserNotFoundException();
       }
     } catch (PDOException $e) {
+      $this->logger->warning("PDOException: $uuid");
       throw new Error("Ошибка при получении пользователя: " . $e->getMessage());
     }
 
